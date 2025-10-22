@@ -7,12 +7,12 @@ let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 // Productos simulados
 
 const productos = [
-  { id: 1, nombre: "Remera Negra", tipo: "Remera", precio: 5000, ruta_img: "", cantidad: 0 },
-  { id: 2, nombre: "Remera Blanca", tipo: "Remera", precio: 4800, ruta_img: "", cantidad: 0 },
-  { id: 3, nombre: "Remera Azul", tipo: "Remera", precio: 5200, ruta_img: "", cantidad: 0 },
-  { id: 4, nombre: "Buzo Negro", tipo: "Buzo", precio: 9000, ruta_img: "", cantidad: 0 },
-  { id: 5, nombre: "Buzo Gris", tipo: "Buzo", precio: 9500, ruta_img: "", cantidad: 0 },
-  { id: 6, nombre: "Buzo Rojo", tipo: "Buzo", precio: 10000, ruta_img: "", cantidad: 0 }
+  { id: 1, nombre: "Remera Negra", tipo: "Remera", precio: 5000, ruta_img: "img/Remera_Negra.jpg", cantidad: 0 },
+  { id: 2, nombre: "Remera Blanca", tipo: "Remera", precio: 4800, ruta_img: "img/Remera_Blanca.jpg", cantidad: 0 },
+  { id: 3, nombre: "Remera Azul", tipo: "Remera", precio: 5200, ruta_img: "img/Remera_Azul.jpg", cantidad: 0 },
+  { id: 4, nombre: "Buzo Negro", tipo: "Buzo", precio: 9000, ruta_img: "img/Buzo_Negro.jpg", cantidad: 0 },
+  { id: 5, nombre: "Buzo Gris", tipo: "Buzo", precio: 9500, ruta_img: "img/Buzo_Gris.jpg", cantidad: 0 },
+  { id: 6, nombre: "Buzo Rojo", tipo: "Buzo", precio: 10000, ruta_img: "img/Buzo_Rojo.jpg", cantidad: 0 }
 ];
 
 
@@ -61,6 +61,14 @@ function actualizarContador() {
 
 // Mostrar nombre del cliente
 document.getElementById("nombre-cliente").innerText = localStorage.getItem("cliente") || "Cliente";
+
+
+//Filtros por prenda de ropa
+
+document.getElementById("filtro-todo").addEventListener("click", () => mostrarLista(productos));
+document.getElementById("filtro-remeras").addEventListener("click", () => mostrarLista(productos.filter(p => p.tipo === "Remera")));
+document.getElementById("filtro-buzos").addEventListener("click", () => mostrarLista(productos.filter(p => p.tipo === "Buzo")));
+
 
 mostrarLista(productos);
 actualizarContador();

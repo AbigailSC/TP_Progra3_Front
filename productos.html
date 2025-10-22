@@ -8,16 +8,22 @@
 </head>
 <body>
   <header>
-    <h2>Bienvenido, <span id="nombre-cliente"></span></h2>
+  <h2>Bienvenido, <span id="nombre-cliente"></span></h2>
+  <div>
+    <label for="barra-busqueda">Buscar:</label>
+    <input type="text" id="barra-busqueda">
+  </div>
 
-    <div>
-      <label for="barra-busqueda">Buscar producto:</label>
-      <input type="text" id="barra-busqueda">
-    </div>
+  <div>
+    <button id="filtro-todo">Todos</button>
+    <button id="filtro-remeras">Remeras</button>
+    <button id="filtro-buzos">Buzos</button>
+  </div>
 
-    <div id="contador-carrito"></div>
-    <a href="carrito.html">Ver carrito 🛍️</a>
-  </header>
+  <div id="contador-carrito"></div>
+  <a href="carrito.html">🛒 Ver carrito</a>
+</header>
+
 
   <main>
     <section id="contenedor-productos"></section>
