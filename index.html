@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Autoservicio - Bienvenida</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script defer src="js/storage.js"></script>
+  <script defer src="js/utils.js"></script>
+</head>
+<body>
+  <main class="bienvenida">
+    <h1>Bienvenido al Autoservicio</h1>
+    <p>Ingrese su nombre para comenzar</p>
+    <input type="text" id="nombre-cliente" placeholder="Tu nombre...">
+    <button id="btn-ingresar">Ingresar</button>
+  </main>
+
+  <script>
+    const inputNombre = document.getElementById("nombre-cliente");
+    const boton = document.getElementById("btn-ingresar");
+
+    boton.addEventListener("click", () => {
+      const nombre = inputNombre.value.trim();
+      if (nombre) {
+        localStorage.setItem("cliente", nombre);
+        window.location.href = "productos.html";
+      } else {
+        alert("Por favor, ingresá tu nombre antes de continuar");
+      }
+    });
+  </script>
+</body>
+</html>

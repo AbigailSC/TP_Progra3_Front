@@ -1,0 +1,47 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  margin: 0;
+  padding: 20px;
+}
+
+header, main, footer {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.card-producto {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px;
+  width: 200px;
+  display: inline-block;
+  background: white;
+  border-radius: 10px;
+}
+
+.card-producto img {
+  width: 100px;
+}
+
+.bloque-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
+  border: 1px solid #aaa;
+  margin-bottom: 5px;
+  background: white;
+}
+
+button {
+  background: #0088ff;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #005fbb;
+}

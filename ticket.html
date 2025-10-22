@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Ticket de Compra</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main>
+    <h2>Ticket de Compra</h2>
+    <div id="ticket"></div>
+    <button onclick="volverInicio()">Volver al inicio</button>
+  </main>
+
+  <script>
+    const ticketDiv = document.getElementById("ticket");
+    const carrito = JSON.parse(localStorage.getItem("ticket")) || [];
+    const cliente = localStorage.getItem("cliente");
+
+    let total = 0;
+    let html = `<p>Cliente: <strong>${cliente}</strong></p><ul>`;
+
+    carrito.forEach(p => {
+      html += `<li>${p.nombre} x${p.cantidad} = $${p.precio * p.cantidad}</li>`;
+      total += p.precio * p.cantidad;
+    });
+
+    html += `</ul><h3>Total: $${total}</h3>`;
+    ticketDiv.innerHTML = html;
+
+    function volverInicio() {
+      localStorage.clear();
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
