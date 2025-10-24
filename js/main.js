@@ -1,3 +1,7 @@
+
+// URL DEl BACKEND
+const API_BASE = "http://localhost:3000/api";
+
 const contenedorProductos = document.getElementById("contenedor-productos");
 const barraBusqueda = document.getElementById("barra-busqueda");
 const contadorCarrito = document.getElementById("contador-carrito");
@@ -6,6 +10,8 @@ let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
 // Productos simulados
 
+// productos cambiarlo al backend despues
+// let productos = [];
 const productos = [
   { id: 1, nombre: "Remera Negra", tipo: "Remera", precio: 5000, ruta_img: "img/Remera_Negra.jpg", cantidad: 0 },
   { id: 2, nombre: "Remera Blanca", tipo: "Remera", precio: 4800, ruta_img: "img/Remera_Blanca.jpg", cantidad: 0 },
@@ -15,6 +21,20 @@ const productos = [
   { id: 6, nombre: "Buzo Rojo", tipo: "Buzo", precio: 10000, ruta_img: "img/Buzo_Rojo.jpg", cantidad: 0 }
 ];
 
+
+/*
+// cargar productos desde la API
+async function cargarProductos() {
+  try {
+    const res = await fetch("${API_BASE}/productos");
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const data = await res.json();
+    productos = data.filter(p => (p.activo === true) || (p.stock === undefined || p.stock > 0));
+  } finally {
+    mostrarLista(productos);
+    actualizarContador();
+  }
+}*/
 
 
 // Mostrar productos
@@ -64,11 +84,12 @@ document.getElementById("nombre-cliente").innerText = localStorage.getItem("clie
 
 
 //Filtros por prenda de ropa
-
 document.getElementById("filtro-todo").addEventListener("click", () => mostrarLista(productos));
 document.getElementById("filtro-remeras").addEventListener("click", () => mostrarLista(productos.filter(p => p.tipo === "Remera")));
 document.getElementById("filtro-buzos").addEventListener("click", () => mostrarLista(productos.filter(p => p.tipo === "Buzo")));
 
 
+
+// cargarProductos();
 mostrarLista(productos);
 actualizarContador();
