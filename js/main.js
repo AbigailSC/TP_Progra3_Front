@@ -89,7 +89,7 @@ async function cargarProductos() {
     mostrarLista(visibles);
   } catch (error) {
     console.error("Error al cargar productos:", error.message);
-    mostrarLista([]); // opcional, deja vacío si hay error
+    mostrarLista([]); // opcional, deja vacio si hay error
   } finally {
     actualizarContador();
   }
