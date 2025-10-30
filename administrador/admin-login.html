@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin – Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="img/favicon.png">
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/admin-login.js"></script>
+</head>
+<body>
+  <main class="bienvenida">
+    <h1>Panel Administrador</h1>
+    <p class="muted">Ingresá con tu usuario y contraseña</p>
+
+    <form id="form-login" class="controls">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Contraseña" required />
+      <button type="submit">Ingresar</button>
+      <button type="button" id="acceso-rapido" class="outline">Acceso rápido</button>
+    </form>
+
+    <p id="msg" class="muted"></p>
+  </main>
+</body>
+</html>

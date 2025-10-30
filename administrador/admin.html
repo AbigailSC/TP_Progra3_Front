@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin – Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="img/favicon.png">
+  <link rel="stylesheet" href="css/style.css" />
+  <script defer src="js/admin.js"></script>
+</head>
+<body>
+
+<header>
+  <div class="marca"><strong>Admin</strong></div>
+  <div class="controls-inline"></div>
+  <nav>
+    <a class="nav-link" href="productos.html">Catálogo</a>
+    <button id="btn-logout" class="outline no-print">Salir</button>
+  </nav>
+</header>
+
+<main>
+  <section class="controls">
+    <h2>Productos</h2>
+
+    <!-- filtro/búsqueda -->
+    <div class="controls-inline">
+      <input type="search" id="busqueda" placeholder="Buscar por nombre…">
+      <select id="filtro-tipo">
+        <option value="">Todos los tipos</option>
+      </select>
+      <select id="filtro-activo">
+        <option value="">Todos</option>
+        <option value="true">Activos</option>
+        <option value="false">Inactivos</option>
+      </select>
+      <button id="btn-refrescar" class="outline">Refrescar</button>
+      <a id="btn-excel" class="outline" href="http://localhost:3000/api/ventas.xlsx" target="_blank">Descargar ventas (.xlsx)</a>
+    </div>
+    <!-- formulario -->
+    <form id="form-producto" enctype="multipart/form-data" class="controls">
+      <input type="hidden" id="prod-id">
+      <input type="text" id="prod-nombre" placeholder="Nombre" required>
+      <input type="number" id="prod-precio" placeholder="Precio" required min="0">
+      <input type="number" id="prod-stock" placeholder="Stock" required min="0">
+      <select id="prod-tipo" required></select>
+      <input type="file" id="prod-img" accept="image/*">
+      <div class="controls-inline">
+        <button type="submit">Guardar</button>
+        <button type="button" id="form-reset" class="ghost">Limpiar</button>
+      </div>
+    </form>
+  </section>
+
+  <hr>
+
+  <!-- listado -->
+  <section id="tabla-productos"></section>
+  <div id="paginador" class="controls-inline"></div>
+</main>
+
+</body>
+</html>
