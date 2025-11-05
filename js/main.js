@@ -1,5 +1,5 @@
 // URL del backend (para conectar más adelante)
-const API_BASE = "http://localhost:3000/api";
+const API_BASE = "http://localhost:4000/api";
 
 // DOM
 const contenedorProductos = document.getElementById("contenedor-productos");

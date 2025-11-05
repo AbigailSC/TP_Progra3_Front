@@ -13,6 +13,8 @@ carrito.forEach(p => {
 html += `</ul><h3>Total: $${total}</h3>`;
 ticketDiv.innerHTML = html;
 
+document.getElementById('btn-pdf')?.addEventListener('click', ()=> window.print());
+
 function volverInicio() {
   localStorage.clear();
   window.location.href = "index.html";

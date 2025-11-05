@@ -13,10 +13,7 @@ button{
 }
 button:hover{ background: var(--primary-600); }
 button:active{ transform: translateY(1px); }
-button.outline{
-  background: #fff; color: var(--text);
-  border-color: var(--border);
-}
+
 button.ghost{
   background: transparent; color: var(--text);
   border-color: transparent;
