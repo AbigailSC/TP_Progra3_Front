@@ -6,12 +6,13 @@ const contenedorProductos = document.getElementById("contenedor-productos");
 const barraBusqueda = document.getElementById("barra-busqueda");
 const contadorCarrito = document.getElementById("contador-carrito");
 const spanCliente = document.getElementById("nombre-cliente");
+const paginacionContainer = document.getElementById("paginacion");
 
 //estado del carrito
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
 // Productos simulados , para ver nomas 
-const productos = [
+let productos = [
   { id: 1, nombre: "Remera Negra",  tipo: "Remera", precio: 5000,  ruta_img: "img/Remera_Negra.jpg",  cantidad: 0 },
   { id: 2, nombre: "Remera Blanca", tipo: "Remera", precio: 4800,  ruta_img: "img/Remera_Blanca.jpg", cantidad: 0 },
   { id: 3, nombre: "Remera Azul",   tipo: "Remera", precio: 5200,  ruta_img: "img/Remera_Azul.jpg",   cantidad: 0 },
@@ -23,15 +24,73 @@ const productos = [
 // Mostrar lista de productos
 function mostrarLista(array) {
   contenedorProductos.innerHTML = "";
+  if (array.length === 0) {
+    contenedorProductos.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+        <p style="font-size: 1.2rem; color: #666;">No se encontraron productos</p>
+      </div>`;
+    return;
+  }
   array.forEach(prod => {
     contenedorProductos.innerHTML += `
       <div class="card-producto">
-        <img src="${prod.ruta_img}" alt="${prod.nombre}">
-        <h3>${prod.nombre}</h3>
+        <img src="${prod.url_image}" alt="${prod.sku}">
+        <h3>${prod.titulo}</h3>
         <p>$${prod.precio}</p>
         <button class="btn-agregar" data-id="${prod.id}">Agregar</button>
       </div>`;
   });
+}
+
+function renderPaginacion(paginacion) {
+  if (!paginacion) return;
+
+  const { currentPage, totalPages, hasNextPage, hasPrevPage } = paginacion;
+  const maxBotones = 5;
+  let inicio = Math.max(1, currentPage - Math.floor(maxBotones / 2));
+  let fin = Math.min(totalPages, inicio + maxBotones - 1);
+
+  paginacionContainer.innerHTML = '';
+
+  if (hasPrevPage) {
+    paginacionContainer.innerHTML += `
+      <button class="btn-paginacion" data-page="${currentPage - 1}">
+        ←
+      </button>`;
+  }
+
+  if (fin - inicio < maxBotones - 1) {
+    inicio = Math.max(1, fin - maxBotones + 1);
+  }
+  if (inicio > 1) {
+    paginacionContainer.innerHTML += `
+      <button class="btn-paginacion" data-page="1">1</button>`;
+    if (inicio > 2) {
+      paginacionContainer.innerHTML += `<span class="dots">...</span>`;
+    }
+  }
+
+  for (let i = inicio; i <= fin; i++) {
+    paginacionContainer.innerHTML += `
+      <button class="btn-paginacion ${i === currentPage ? 'active' : ''}" data-page="${i}">
+        ${i}
+      </button>`;
+  }
+
+  if (fin < totalPages) {
+    if (fin < totalPages - 1) {
+      paginacionContainer.innerHTML += `<span class="dots">...</span>`;
+    }
+    paginacionContainer.innerHTML += `
+      <button class="btn-paginacion" data-page="${totalPages}">${totalPages}</button>`;
+  }
+
+  if (hasNextPage) {
+    paginacionContainer.innerHTML += `
+      <button class="btn-paginacion" data-page="${currentPage + 1}">
+        →
+      </button>`;
+  }
 }
 
 // Agregar producto al carrito
@@ -77,16 +136,30 @@ spanCliente.innerText = localStorage.getItem("cliente") || "Cliente";
 mostrarLista(productos);
 actualizarContador();
 
-/* 
+
 // Carga de productos desde backend
 
-async function cargarProductos() {
+async function cargarProductos(page = 1, buscar = '') {
   try {
-    const res = await fetch(`${API_BASE}/productos`);
+    let url = `${API_BASE}/productos?page=${page}&limit=10`; // limite = cantidad de prods a mostrar
+
+    if (buscar) {
+      url += `&buscar=${encodeURIComponent(buscar)}`;
+    }
+
+    const res = await fetch(url);
     if (!res.ok) throw new Error("HTTP " + res.status);
-    const data = await res.json();
-    const visibles = data.filter(p => p.activo || p.stock > 0 || p.stock === undefined);
-    mostrarLista(visibles);
+
+    const { data } = await res.json();
+
+    productos = data.productos.filter(p => p.activo || p.stock > 0 || p.stock === undefined);
+    paginaActual = data.pagination.currentPage;
+    totalPaginas = data.pagination.totalPages;
+
+    localStorage.setItem('productos', JSON.stringify(productos));
+
+    mostrarLista(productos);
+    renderPaginacion(data.pagination);
   } catch (error) {
     console.error("Error al cargar productos:", error.message);
     mostrarLista([]); // opcional, deja vacio si hay error
@@ -95,6 +168,16 @@ async function cargarProductos() {
   }
 }
 
+if (paginacionContainer) {
+  paginacionContainer.addEventListener("click", (e) => {
+    if (e.target.classList.contains("btn-paginacion")) {
+      const page = parseInt(e.target.dataset.page);
+      const buscar = barraBusqueda.value.trim();
+      cargarProductos(page, buscar);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  });
+}
+
 // Y en lugar de mostrarLista(productos), llamar a:
-// cargarProductos();
-*/
+cargarProductos();
