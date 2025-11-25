@@ -115,10 +115,9 @@ function actualizarContador() {
 }
 
 // Filtro de búsqueda
-barraBusqueda.addEventListener("input", () => {
+barraBusqueda.addEventListener("input", async () => {
   const valor = barraBusqueda.value.toLowerCase();
-  const filtrados = productos.filter(p => p.nombre.toLowerCase().includes(valor));
-  mostrarLista(filtrados);
+  await cargarProductos(1, valor);
 });
 
 // Eventos de botones agregar al carrito
