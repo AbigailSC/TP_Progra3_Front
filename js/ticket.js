@@ -16,6 +16,9 @@ ticketDiv.innerHTML = html;
 document.getElementById('btn-pdf')?.addEventListener('click', ()=> window.print());
 
 function volverInicio() {
-  localStorage.clear();
+  // Solo borrar datos de compra, NO el tema
+  localStorage.removeItem("ticket");
+  localStorage.removeItem("cliente");
+  localStorage.removeItem("carrito");
   window.location.href = "index.html";
 }

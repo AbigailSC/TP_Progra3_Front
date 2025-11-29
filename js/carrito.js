@@ -7,7 +7,7 @@ function mostrarCarrito() {
   carrito.forEach((p, i) => {
     contenedorCarrito.innerHTML += `
       <div class="bloque-item">
-        <p>${p.nombre} x${p.cantidad} - $${p.precio * p.cantidad}</p>
+        <p>${p.titulo || p.nombre} x${p.cantidad} - $${p.precio * p.cantidad}</p>
         <button onclick="eliminar(${i})">❌</button>
       </div>`;
   });
