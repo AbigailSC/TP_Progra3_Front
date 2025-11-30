@@ -11,7 +11,7 @@ header {
   z-index: 10;
   padding: 14px 20px;
   display: grid;
-  grid-template-columns: auto 1fr auto; /* Marca | Controles | Botón */
+  grid-template-columns: auto 1fr; /* Marca | Controles */
   gap: 12px;
   align-items: center;
 }
@@ -29,25 +29,30 @@ header .controls-inline {
   margin: 0 auto;
 }
 
-/* Botón de tema */
+/* Botón de tema - Flotante */
 #cambiar-tema {
-  grid-column: 3;
-  justify-self: end;
-  width: auto;
-  padding: 6px 10px;
-  font-size: 0.9rem;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
-  color: var(--text);
-  cursor: pointer;
-  box-shadow: var(--shadow);
-  transition: background 0.3s, color 0.3s;
-}
-#cambiar-tema:hover {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  font-size: 1.4rem;
+  border: none;
+  border-radius: 50%;
   background: var(--primary);
   color: #fff;
-  border-color: var(--primary-600);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#cambiar-tema:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
 }
 
 /* nav ocupa la fila de abajo */
