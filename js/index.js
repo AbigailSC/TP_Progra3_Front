@@ -5,7 +5,7 @@ const boton = document.getElementById("btn-ingresar");
 
 async function crearCliente(nombre) {
   try {
-    const res = await fetch(`${API_BASE}/clientes`, {
+    const response = await fetch(`${API_BASE}/clientes`, {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -13,8 +13,12 @@ async function crearCliente(nombre) {
       method: 'POST',
       body: JSON.stringify({ nombre })
     });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    localStorage.setItem("cliente", nombre);
+    const data = await response.json();
+    if (data.status !== 201) {
+      throw new Error("HTTP " + res.status);
+    } else {
+      localStorage.setItem("cliente", JSON.stringify({ id: data.data.id, nombre }));
+    }
   } catch (error) {
     console.error("Error al crear cliente:", error.message);
   }

@@ -6,7 +6,7 @@ let total = 0;
 let html = `<p>Cliente: <strong>${cliente}</strong></p><ul>`;
 
 carrito.forEach(p => {
-  html += `<li>${p.nombre} x${p.cantidad} = $${p.precio * p.cantidad}</li>`;
+  html += `<li>${p.titulo} x${p.cantidad} = $${p.precio * p.cantidad}</li>`;
   total += p.precio * p.cantidad;
 });
 

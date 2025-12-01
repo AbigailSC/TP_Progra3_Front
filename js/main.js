@@ -42,6 +42,7 @@ function mostrarLista(array) {
   });
 }
 
+// Mostrar paginacion
 function renderPaginacion(paginacion) {
   if (!paginacion) return;
 
@@ -94,7 +95,9 @@ function renderPaginacion(paginacion) {
 }
 
 // Agregar producto al carrito
-function agregarACarrito(id) {
+async function agregarACarrito(id) {
+  let carritoId = parseInt(localStorage.getItem("carrito_id")) || null;
+  const cliente = JSON.parse(localStorage.getItem('cliente'));
   const producto = productos.find(p => p.id === id);
   const enCarrito = carrito.find(p => p.id === id);
 
@@ -106,12 +109,75 @@ function agregarACarrito(id) {
 
   localStorage.setItem("carrito", JSON.stringify(carrito));
   actualizarContador();
+  const carritoExiste = await obtenerCarritoActivo(cliente.id);
+  if (carritoExiste) {
+    // obtener cantidad siempre
+    await actualizarCarritoDb(carritoId, producto.id, 1);
+  } else {
+    await crearCarrito(cliente.id);
+    await actualizarCarritoDb(carritoId, producto.id, 1);
+  }
 }
 
 // Actualizar contador del carrito
 function actualizarContador() {
   const total = carrito.reduce((acc, p) => acc + p.cantidad, 0);
   contadorCarrito.innerText = `Carrito: ${total}`;
+}
+
+// Creo el carrito con estado "activo"
+async function crearCarrito(id) {
+  try {
+    const response = await fetch(`${API_BASE}/carritos`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ cliente_id: id })
+    });
+
+    const data = await response.json();
+
+    if (data.status === 201) {
+      localStorage.setItem("carrito_id", data.data.carritoId);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Agrego Items al carrito ya creado
+async function actualizarCarritoDb(carritoId, productoId, cantidad) {
+  try {
+    const response = await fetch(`${API_BASE}/carrito-items`, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ carritoId, productoId, cantidad })
+    });
+
+    const data = await response.json();
+
+    if (data.status !== 201) {
+      throw new Error('Error al crear el carrito:', data.data.errors[0]);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Pregunto a la API si el cliente ya tiene un carrito con estado "activo" creado
+async function obtenerCarritoActivo(id) {
+  try {
+    const response = await fetch(`${API_BASE}/carritos/${id}`);
+    const data = await response.json();
+
+    if (data.status === 404) return false;
+    return true;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Filtro de búsqueda
@@ -121,15 +187,15 @@ barraBusqueda.addEventListener("input", async () => {
 });
 
 // Eventos de botones agregar al carrito
-contenedorProductos.addEventListener("click", (e) => {
+contenedorProductos.addEventListener("click", async (e) => {
   if (e.target.classList.contains("btn-agregar")) {
     const id = parseInt(e.target.dataset.id);
-    agregarACarrito(id);
+    await agregarACarrito(id);
   }
 });
 
 // Mostrar nombre del cliente guardado
-spanCliente.innerText = localStorage.getItem("cliente") || "Cliente";
+spanCliente.innerText = JSON.parse(localStorage.getItem("cliente")).nombre || "Invitado";
 
 
 mostrarLista(productos);

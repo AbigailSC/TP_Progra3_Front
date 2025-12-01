@@ -9,7 +9,7 @@ header {
   position: sticky; 
   top: 0; 
   z-index: 10;
-  padding: 14px 20px;
+  padding: 14px 200px;
   display: grid;
   grid-template-columns: auto 1fr auto; /* Marca | Controles | Botón */
   gap: 12px;
