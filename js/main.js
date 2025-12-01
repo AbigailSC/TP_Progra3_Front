@@ -27,17 +27,25 @@ function mostrarLista(array) {
   if (array.length === 0) {
     contenedorProductos.innerHTML = `
       <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
-        <p style="font-size: 1.2rem; color: #666;">No se encontraron productos</p>
+        <p style="font-size: 1.2rem; color: var(--muted);">No se encontraron productos</p>
       </div>`;
     return;
   }
   array.forEach(prod => {
+    const sinStock = prod.stock === 0;
+    
+    let stockBadge = "";
+    if (sinStock) {
+      stockBadge = `<span class="stock-badge out">Sin stock</span>`;
+    }
+    
     contenedorProductos.innerHTML += `
-      <div class="card-producto">
-        <img src="${prod.url_image}" alt="${prod.sku}">
+      <div class="card-producto ${sinStock ? 'sin-stock' : ''}">
+        ${stockBadge}
+        <img src="${prod.url_image}" alt="${prod.titulo}">
         <h3>${prod.titulo}</h3>
-        <p>$${prod.precio}</p>
-        <button class="btn-agregar" data-id="${prod.id}">Agregar</button>
+        <p>$${prod.precio.toLocaleString()}</p>
+        <button class="btn-agregar" data-id="${prod.id}" ${sinStock ? 'disabled' : ''}>Agregar</button>
       </div>`;
   });
 }
@@ -99,7 +107,16 @@ async function agregarACarrito(id) {
   let carritoId = parseInt(localStorage.getItem("carrito_id")) || null;
   const cliente = JSON.parse(localStorage.getItem('cliente'));
   const producto = productos.find(p => p.id === id);
+  if (!producto || producto.stock === 0) return;
+  
   const enCarrito = carrito.find(p => p.id === id);
+  const cantidadEnCarrito = enCarrito ? enCarrito.cantidad : 0;
+  
+  // Verificar que no exceda el stock
+  if (cantidadEnCarrito >= producto.stock) {
+    alert("No hay más stock disponible de este producto");
+    return;
+  }
 
   if (enCarrito) {
     enCarrito.cantidad++;
